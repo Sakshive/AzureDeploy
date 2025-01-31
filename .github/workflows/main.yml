@@ -24,7 +24,7 @@ jobs:
 # Publish the application (ensure the output folder is correct)
       - name: Publish .NET Framework App
         run: |
-          msbuild GithubProject.sln  /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile="D:\GitHubDeploy\GithubProject\GithubProject\Properties\PublishProfiles\FolderProfile.pubxml" /p:PublishDir=./publish
+          msbuild GithubProject.sln  /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile="GithubProject/Properties/PublishProfiles/FolderProfile" /p:PublishDir=./publish
 
 
       # Deploy the app to Azure Web App
