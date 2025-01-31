@@ -37,6 +37,24 @@ jobs:
         with:
           name: ASP-app
           path: "${GITHUB_WORKSPACE}/published/**"
+
+
+
+  approve:
+    runs-on: self-hosted
+    needs: build
+    environment:
+      name: approveit 
+    steps:
+      - name: Wait for approval before deploying to production
+        run: echo "Waiting for manual approval to deploy to production"
+
+
+
+
+
+
+          
   deploy:
     runs-on: self-hosted 
     needs: build
