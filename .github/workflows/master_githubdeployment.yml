@@ -27,16 +27,16 @@ jobs:
 
       - name: Build
         # run:  msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:PublishDir="${GITHUB_WORKSPACE}/published" "D:\GitHubDeploy\GithubProject\GithubProject.sln"
-        run: msbuild "D:\GitHubDeploy\GithubProject\GithubProject.sln" /p:Configuration=Release /p:PublishDir="${GITHUB_WORKSPACE}/published" 
+        run: msbuild "D:\GitHubDeploy\GithubProject\GithubProject.sln" /p:Configuration=Release /p:PublishDir="$GITHUB_WORKSPACE/published" 
         
       - name: Verify
-        run: ls -R "${GITHUB_WORKSPACE}/published"  # Verify that the build output is there
+        run: ls -R "$GITHUB_WORKSPACE/published"  # Verify that the build output is there
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: "${GITHUB_WORKSPACE}/published/**"
+          path: "$GITHUB_WORKSPACE/published/**"
 
 
 
