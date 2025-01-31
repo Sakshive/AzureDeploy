@@ -22,8 +22,8 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore  # Restore the NuGet packages
 
-      - name: Ensure 'published' directory exists
-        run: mkdir -p "${GITHUB_WORKSPACE}/published"  # Create the directory if it doesn't exist
+      # - name: Ensure 'published' directory exists
+      #   run: mkdir -p "${GITHUB_WORKSPACE}/published"  # Create the directory if it doesn't exist
 
       - name: Publish to folder
         run: msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:PublishDir="C:/published" 
