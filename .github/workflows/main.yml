@@ -1,37 +1,39 @@
-name: Build and Deploy .NET Framework App to Azure Web App
+name: .NET Framework CI/CD
 
 on:
   push:
     branches:
-      - master 
+      - main  # Trigger the workflow when there is a push to the main branch
+
 jobs:
-  build-and-deploy:
-    runs-on: windows-latest 
-    
+  build:
+    runs-on: windows-latest
+
     steps:
-      # Checkout code from the repository
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Set up .NET Framework SDK on the runner (even though the runner is Windows, it's good to ensure the right version is used)
-      - name: Setup .NET Framework SDK
-        uses: microsoft/setup-msbuild@v1.0.2
+    - name: Set up .NET Framework SDK
+      uses: microsoft/setup-dotnet@v1
+      with:
+        dotnet-version: '4.8'  # Use the version matching your app
 
-      # Build the solution (adjust the path if necessary)
-      - name: Build Solution
-        run: |
-          msbuild GithubProject.sln /p:Configuration=Release
-# Publish the application (ensure the output folder is correct)
-      - name: Publish .NET Framework App
-        run: |
-          msbuild GithubProject.sln  /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile="GithubProject/Properties/PublishProfiles/FolderProfile" /p:PublishDir=./publish
+    - name: Restore dependencies
+      run: nuget restore GithubProject.sln
 
+    - name: Build application
+      run: msbuild GithubProject.sln /p:Configuration=Release
 
-      # Deploy the app to Azure Web App
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: <gitHubDeployment>
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./publish
+    - name: Publish application
+      run: |
+        mkdir -p ./publish
+        msbuild GithubProject.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=./publish
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: gitHubDeployment
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        package: ./publish
+
           
