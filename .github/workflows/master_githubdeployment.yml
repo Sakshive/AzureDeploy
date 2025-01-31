@@ -30,7 +30,7 @@ jobs:
         run: msbuild "D:\GitHubDeploy\GithubProject\GithubProject.sln" /p:Configuration=Release /p:PublishDir="$GITHUB_WORKSPACE/published" 
         
       - name: Verify
-        run: Get-ChildItem   # Verify that the build output is there
+        run: Get-ChildItem -Path "$GITHUB_WORKSPACE"  # Verify that the build output is there
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
