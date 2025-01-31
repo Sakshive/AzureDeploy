@@ -25,17 +25,18 @@ jobs:
       # - name: Ensure 'published' directory exists
       #   run: mkdir -p "${GITHUB_WORKSPACE}/published"  # Create the directory if it doesn't exist
 
-      - name: Publish to folder
+      - name: Build
         # run:  msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:PublishDir="${GITHUB_WORKSPACE}/published" "D:\GitHubDeploy\GithubProject\GithubProject.sln"
-        run:  msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:PublishDir="C:\published" "D:\GitHubDeploy\GithubProject\GithubProject.sln" 
-
+        run: msbuild "GithubProject.sln" /p:Configuration=Release /p:PublishDir="${GITHUB_WORKSPACE}/published" 
+        
+      - name: Verify
+        run: ls -R "${GITHUB_WORKSPACE}/published"  # Verify that the build output is there
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          # path: "${GITHUB_WORKSPACE}/published/**" 
-          path: "C:/published/**" # Correct path to upload artifacts
-
+          path: "${GITHUB_WORKSPACE}/published/**"
   deploy:
     runs-on: self-hosted 
     needs: build
