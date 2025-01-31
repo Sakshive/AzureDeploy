@@ -21,3 +21,17 @@ jobs:
       - name: Build Solution
         run: |
           msbuild GithubProject.sln /p:Configuration=Release
+# Publish the application (ensure the output folder is correct)
+      - name: Publish .NET Framework App
+        run: |
+          msbuild GithubProject.sln  /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:PublishDir=./publish
+
+
+      # Deploy the app to Azure Web App
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: <gitHubDeployment>
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
+          
