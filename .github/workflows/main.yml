@@ -1,0 +1,23 @@
+name: Build and Deploy .NET Framework App to Azure Web App
+
+on:
+  push:
+    branches:
+      - master 
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest 
+    
+    steps:
+      # Checkout code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up .NET Framework SDK on the runner (even though the runner is Windows, it's good to ensure the right version is used)
+      - name: Setup .NET Framework SDK
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      # Build the solution (adjust the path if necessary)
+      - name: Build Solution
+        run: |
+          msbuild GithubProject.sln /p:Configuration=Release
