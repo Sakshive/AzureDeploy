@@ -25,10 +25,17 @@ jobs:
       # - name: Ensure 'published' directory exists
       #   run: mkdir -p "${GITHUB_WORKSPACE}/published"  # Create the directory if it doesn't exist
 
+      # - name: Build
+      #   # run:  msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:PublishDir="${GITHUB_WORKSPACE}/published" "D:\GitHubDeploy\GithubProject\GithubProject.sln"
+      #   run: msbuild "D:\GitHubDeploy\GithubProject\GithubProject.sln" /p:Configuration=Release /p:PublishDir="$GITHUB_WORKSPACE/published" 
+
+         # Step 4: Build the .NET Framework project
       - name: Build
-        # run:  msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:PublishDir="${GITHUB_WORKSPACE}/published" "D:\GitHubDeploy\GithubProject\GithubProject.sln"
-        run: msbuild "D:\GitHubDeploy\GithubProject\GithubProject.sln" /p:Configuration=Release /p:PublishDir="$GITHUB_WORKSPACE/published" 
-        
+        run: msbuild /p:Configuration=Release GithubProject.sln
+   # Step 5: Publish the application to a folder
+      - name: Publish
+        run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile GithubProject.sln
+
       - name: Verify
         run: Get-ChildItem -Path "$GITHUB_WORKSPACE"  # Verify that the build output is there
         
@@ -40,14 +47,14 @@ jobs:
 
 
 
-  approve:
-    runs-on: self-hosted
-    needs: build
-    environment:
-      name: approveit 
-    steps:
-      - name: Wait for approval before deploying to production
-        run: echo "Waiting for manual approval to deploy to production"
+  # approve:
+  #   runs-on: self-hosted
+  #   needs: build
+  #   environment:
+  #     name: approveit 
+  #   steps:
+  #     - name: Wait for approval before deploying to production
+  #       run: echo "Waiting for manual approval to deploy to production"
 
 
 
