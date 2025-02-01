@@ -34,8 +34,7 @@ jobs:
         run: msbuild /p:Configuration=Release "D:\GitHubDeploy\GithubProject\GithubProject.sln"
    # Step 5: Publish the application to a folder
       - name: Publish
-        run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile GithubProject.sln
-
+        run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile "D:\GitHubDeploy\GithubProject\GithubProject.sln"
       - name: Verify
         run: Get-ChildItem -Path "$GITHUB_WORKSPACE"  # Verify that the build output is there
         
