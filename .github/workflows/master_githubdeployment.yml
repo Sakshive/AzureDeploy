@@ -33,7 +33,7 @@ jobs:
       - name: Build
         shell: cmd
         run: |
-          msbuild msbuild GithubProject.sln /p:configuration="Release" /p:PublishUrl="../_build"
+          msbuild "C:\Windows\System32\actions-runner\_work\AzureDeploy\AzureDeploy\GithubProject.sln" /p:configuration="Release" /p:PublishUrl="../_build"
    # Step 5: Publish the application to a folder
       # - name: Publish
       #   run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile "D:\GitHubDeploy\GithubProject\GithubProject.sln"
