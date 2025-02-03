@@ -31,18 +31,36 @@ jobs:
 
          # Step 4: Build the .NET Framework project
       - name: Build
-        run: msbuild /p:Configuration=Release "D:\GitHubDeploy\GithubProject\GithubProject.sln"
+        run: msbuild /p:Configuration=Release "D:\GitHubDeploy\GithubProject\GithubProject.sln" /p:configuration="Release" /p:PublishUrl="../_build"
    # Step 5: Publish the application to a folder
-      - name: Publish
-        run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile "D:\GitHubDeploy\GithubProject\GithubProject.sln"
+      # - name: Publish
+      #   run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile "D:\GitHubDeploy\GithubProject\GithubProject.sln"
+     
       - name: Verify
         run: Get-ChildItem -Path "$GITHUB_WORKSPACE"  # Verify that the build output is there
-        
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4  #  Updated version
         with:
-          name: ASP-app
-          path: "$GITHUB_WORKSPACE/published/**"
+          name: build-artifact
+          path: "./_build"
+ 
+  # download-artifact:
+  #   runs-on: Runner
+  #   needs: build  # This ensures it runs only after the 'build' job completes successfully
+  #   steps:
+  #     - name: Download artifact
+  #       uses: actions/download-artifact@v4  # Latest version
+  #       with:
+  #         name: build-artifact
+  #         path: D:\MyWork\Github_Actions\Runner\Artifact\.NEt_Framework_Artifact
+        
+        
+      # - name: Upload artifact for deployment job
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ASP-app
+      #     path: "$GITHUB_WORKSPACE/published/**"
 
 
 
