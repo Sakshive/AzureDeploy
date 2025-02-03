@@ -31,7 +31,9 @@ jobs:
 
          # Step 4: Build the .NET Framework project
       - name: Build
-        run: msbuild GithubProject.sln /p:configuration="Release" /p:PublishUrl="../_build"
+        shell: cmd
+        run: |
+          msbuild msbuild GithubProject.sln /p:configuration="Release" /p:PublishUrl="../_build"
    # Step 5: Publish the application to a folder
       # - name: Publish
       #   run: msbuild /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile "D:\GitHubDeploy\GithubProject\GithubProject.sln"
